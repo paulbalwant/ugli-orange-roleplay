@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ugli Orange Negotiation — Role Assignment</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:        #0f1f3d;
+    --navy-mid:    #1a3260;
+    --navy-light:  #243d73;
+    --gold:        #c9983a;
+    --gold-light:  #e8b95a;
+    --cream:       #f7f3ec;
+    --cream-dark:  #ede7db;
+    --text:        #1c1c2e;
+    --text-muted:  #5a5a72;
+    --white:       #ffffff;
+    --border:      #d4ccc0;
+    --shadow:      0 4px 24px rgba(15,31,61,0.10);
+    --shadow-lg:   0 8px 40px rgba(15,31,61,0.18);
+
+    /* Role colours */
+    --jones-dark:  #1a4a2e;
+    --jones-mid:   #2d6a4f;
+    --jones-light: #e8f5ee;
+    --jones-acc:   #52b788;
+
+    --roland-dark: #4a1520;
+    --roland-mid:  #8b2c2c;
+    --roland-light:#faeaea;
+    --roland-acc:  #e07b6a;
+
+    --obs-dark:    #1a2f5a;
+    --obs-mid:     #243d73;
+    --obs-light:   #e8edf7;
+    --obs-acc:     #6b8fcf;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ─── LANDING ─── */
+  #landing {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .landing-header {
+    background: var(--navy);
+    color: var(--white);
+    padding: 2.8rem 2rem 2.2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .landing-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(201,152,58,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .landing-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+  }
+  .course-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 0.7rem;
+  }
+  .landing-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+  .landing-header h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .landing-header p {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.6);
+    font-style: italic;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ─── ROLE PICKER ─── */
+  .role-picker {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem 4rem;
+    gap: 1.2rem;
+  }
+  .picker-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+  }
+  .role-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+    width: 100%;
+    max-width: 760px;
+  }
+
+  .role-card {
+    border: none;
+    border-radius: 14px;
+    padding: 2rem 1.6rem 1.8rem;
+    cursor: pointer;
+    text-align: left;
+    transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.22s;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Source Serif 4', serif;
+  }
+  .role-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+    background: rgba(255,255,255,0.07);
+  }
+  .role-card:hover { transform: translateY(-5px) scale(1.02); }
+  .role-card:hover::before { opacity: 1; }
+  .role-card:active { transform: scale(0.98); }
+
+  .role-card.jones {
+    background: linear-gradient(145deg, var(--jones-dark), var(--jones-mid));
+    box-shadow: 0 6px 32px rgba(26,74,46,0.35);
+    color: var(--white);
+  }
+  .role-card.roland {
+    background: linear-gradient(145deg, var(--roland-dark), var(--roland-mid));
+    box-shadow: 0 6px 32px rgba(74,21,32,0.35);
+    color: var(--white);
+  }
+  .role-card.observer {
+    background: linear-gradient(145deg, var(--obs-dark), var(--obs-mid));
+    box-shadow: 0 6px 32px rgba(26,47,90,0.35);
+    color: var(--white);
+  }
+
+  .role-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+  .role-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+  .role-card-sub {
+    font-size: 0.82rem;
+    opacity: 0.72;
+    font-style: italic;
+    line-height: 1.45;
+  }
+  .role-card-arrow {
+    position: absolute;
+    bottom: 1.2rem; right: 1.4rem;
+    font-size: 1.3rem;
+    opacity: 0.5;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .role-card:hover .role-card-arrow { opacity: 1; transform: translateX(4px); }
+
+  .warning-note {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: center;
+    max-width: 480px;
+    font-style: italic;
+    border-top: 1px solid var(--border);
+    padding-top: 1.2rem;
+    margin-top: 0.4rem;
+  }
+  .warning-note strong { color: var(--text); }
+
+  /* ─── ROLE VIEWS ─── */
+  .role-view { display: none; min-height: 100vh; flex-direction: column; }
+  .role-view.active { display: flex; }
+
+  /* Role header */
+  .role-header {
+    padding: 1.8rem 2rem 1.5rem;
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .role-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .role-header.jones  { background: linear-gradient(135deg, var(--jones-dark), var(--jones-mid)); }
+  .role-header.jones::after { background: linear-gradient(90deg, transparent, var(--jones-acc), transparent); }
+  .role-header.roland { background: linear-gradient(135deg, var(--roland-dark), var(--roland-mid)); }
+  .role-header.roland::after { background: linear-gradient(90deg, transparent, var(--roland-acc), transparent); }
+  .role-header.observer { background: linear-gradient(135deg, var(--obs-dark), var(--obs-mid)); }
+  .role-header.observer::after { background: linear-gradient(90deg, transparent, var(--obs-acc), transparent); }
+
+  .role-header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .role-header-text { flex: 1; }
+  .role-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 0.3rem;
+  }
+  .role-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.2rem;
+  }
+  .role-header p { font-size: 0.88rem; opacity: 0.7; font-style: italic; }
+
+  .back-btn {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    background: rgba(255,255,255,0.15);
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+    align-self: center;
+  }
+  .back-btn:hover { background: rgba(255,255,255,0.25); }
+
+  /* Role content area */
+  .role-content { flex: 1; max-width: 900px; margin: 0 auto; width: 100%; padding: 2rem 1.5rem 4rem; }
+
+  /* Confidential banner */
+  .confidential-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+    margin-bottom: 1.6rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+  .confidential-banner.jones  { background: var(--jones-light);  color: var(--jones-dark);  border: 1.5px solid var(--jones-acc); }
+  .confidential-banner.roland { background: var(--roland-light); color: var(--roland-dark); border: 1.5px solid var(--roland-acc); }
+  .confidential-banner.observer { background: var(--obs-light);  color: var(--obs-dark);    border: 1.5px solid var(--obs-acc); }
+
+  /* Role document card */
+  .doc-card {
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .doc-card-header {
+    padding: 1rem 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .doc-card-header.jones  { background: var(--jones-light);  border-bottom: 2px solid var(--jones-acc); }
+  .doc-card-header.roland { background: var(--roland-light); border-bottom: 2px solid var(--roland-acc); }
+  .doc-card-header.obs    { background: var(--obs-light);    border-bottom: 2px solid var(--obs-acc); }
+  .doc-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+  .doc-card-title.jones  { color: var(--jones-dark); }
+  .doc-card-title.roland { color: var(--roland-dark); }
+  .doc-card-title.obs    { color: var(--obs-dark); }
+
+  .doc-body {
+    padding: 1.6rem 2rem;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--text);
+  }
+  .doc-body p { margin-bottom: 1rem; }
+  .doc-body p:last-child { margin-bottom: 0; }
+
+  /* Key info highlights */
+  .key-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.9rem;
+    margin: 1.5rem 0 0.5rem;
+  }
+  .key-fact {
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+    font-size: 0.83rem;
+    line-height: 1.45;
+  }
+  .key-fact.jones  { background: var(--jones-light);  border-left: 3px solid var(--jones-acc); }
+  .key-fact.roland { background: var(--roland-light); border-left: 3px solid var(--roland-acc); }
+  .key-fact.obs    { background: var(--obs-light);    border-left: 3px solid var(--obs-acc); }
+  .key-fact-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+  .key-fact-label.jones  { color: var(--jones-mid); }
+  .key-fact-label.roland { color: var(--roland-mid); }
+  .key-fact-label.obs    { color: var(--obs-mid); }
+  .key-fact-value { font-weight: 600; color: var(--text); }
+
+  /* Timer widget */
+  .timer-card {
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 10px;
+    padding: 1.4rem 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    flex-wrap: wrap;
+    box-shadow: var(--shadow-lg);
+  }
+  .timer-display {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    letter-spacing: 0.04em;
+    min-width: 120px;
+  }
+  .timer-display.running { animation: pulse-gold 2s ease-in-out infinite; }
+  .timer-display.warning { color: #f4a261 !important; }
+  .timer-display.danger  { color: #e76f51 !important; animation: pulse-red 0.8s ease-in-out infinite; }
+  @keyframes pulse-gold {
+    0%, 100% { opacity: 1; } 50% { opacity: 0.75; }
+  }
+  @keyframes pulse-red {
+    0%, 100% { opacity: 1; } 50% { opacity: 0.5; }
+  }
+  .timer-info { flex: 1; }
+  .timer-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 0.2rem; }
+  .timer-sub   { font-size: 0.82rem; color: rgba(255,255,255,0.6); font-style: italic; }
+  .timer-btns  { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+  .timer-btn {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.55rem 1.2rem;
+    border-radius: 7px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .timer-btn.start  { background: var(--jones-acc);  color: var(--white); }
+  .timer-btn.pause  { background: var(--gold);        color: var(--navy);  }
+  .timer-btn.reset  { background: rgba(255,255,255,0.15); color: var(--white); border: 1px solid rgba(255,255,255,0.2); }
+  .timer-btn:hover  { transform: scale(1.04); }
+  .timer-done-msg { display: none; color: var(--gold-light); font-weight: 600; font-size: 0.9rem; margin-top: 0.4rem; }
+  .timer-done-msg.visible { display: block; }
+
+  /* Observer two-column */
+  .observer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.4rem;
+  }
+  @media (max-width: 680px) { .observer-grid { grid-template-columns: 1fr; } }
+
+  /* Preparation checklist */
+  .prep-card {
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    padding: 1.4rem 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+  .prep-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.9rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .prep-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--cream-dark);
+    font-size: 0.88rem;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.15s;
+  }
+  .prep-item:last-child { border-bottom: none; }
+  .prep-item input[type="checkbox"] { margin-top: 3px; flex-shrink: 0; accent-color: var(--navy); width: 15px; height: 15px; cursor: pointer; }
+  .prep-item label { cursor: pointer; line-height: 1.5; }
+  .prep-item.checked label { text-decoration: line-through; color: var(--text-muted); }
+
+  /* Observer note prompts */
+  .obs-prompts { margin-top: 1rem; }
+  .obs-prompt-item {
+    display: flex; gap: 0.7rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--cream-dark);
+    font-size: 0.87rem;
+  }
+  .obs-prompt-item:last-child { border-bottom: none; }
+  .obs-bullet { color: var(--obs-acc); font-weight: 700; flex-shrink: 0; }
+
+  /* Divider */
+  .section-divider {
+    display: flex; align-items: center; gap: 1rem;
+    margin: 1.6rem 0 1.2rem;
+  }
+  .section-divider span {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted); white-space: nowrap;
+  }
+  .section-divider::before, .section-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 520px) {
+    .role-cards { grid-template-columns: 1fr; }
+    .doc-body { padding: 1.2rem 1.2rem; }
+    .timer-display { font-size: 2.2rem; }
+  }
+
+  /* ─── PASSWORD OVERLAY ─── */
+  #observer-lock {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 18, 35, 0.97);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .lock-box {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 2.4rem 2.2rem 2rem;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+  }
+  .lock-icon { font-size: 2.4rem; margin-bottom: 0.8rem; }
+  .lock-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.35rem;
+  }
+  .lock-box p {
+    font-size: 0.87rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 1.4rem;
+    line-height: 1.5;
+  }
+  .lock-input {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.05rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    text-align: center;
+    letter-spacing: 0.12em;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 0.8rem;
+  }
+  .lock-input:focus { border-color: var(--obs-mid); }
+  .lock-input.error { border-color: var(--roland-mid); animation: shake 0.35s ease; }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25%       { transform: translateX(-6px); }
+    75%       { transform: translateX(6px); }
+  }
+  .lock-submit {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--obs-mid);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .lock-submit:hover { background: var(--obs-dark); }
+  .lock-error-msg {
+    font-size: 0.82rem;
+    color: var(--roland-mid);
+    margin-top: 0.6rem;
+    min-height: 1.2em;
+    font-style: italic;
+  }
+  .lock-back {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-top: 0.9rem;
+    text-decoration: underline;
+    font-family: 'Source Serif 4', serif;
+  }
+  .lock-back:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     LANDING PAGE
+══════════════════════════════════════════════ -->
+<div id="landing">
+  <div class="landing-header">
+    <div class="course-tag">Organizational Behaviour — MGMT 2008</div>
+    <h1>The <em>Ugli Orange</em><br>Negotiation</h1>
+    <p>An experiential role-play exercise in conflict management &amp; negotiation strategy</p>
+  </div>
+
+  <div class="role-picker">
+    <div class="picker-label">Select your assigned role to begin</div>
+
+    <div class="role-cards">
+      <button class="role-card jones" onclick="showRole('jones')">
+        <span class="role-icon">🔬</span>
+        <div class="role-card-title">Dr. J.W. Jones</div>
+        <div class="role-card-sub">Pharmaceutical research scientist<br>seeking a cure for Rudosen</div>
+        <span class="role-card-arrow">→</span>
+      </button>
+
+      <button class="role-card roland" onclick="showRole('roland')">
+        <span class="role-icon">⚗️</span>
+        <div class="role-card-title">Dr. P.W. Roland</div>
+        <div class="role-card-sub">Biological warfare research biologist<br>on a government contract</div>
+        <span class="role-card-arrow">→</span>
+      </button>
+
+      <button class="role-card observer" onclick="showRole('observer')">
+        <span class="role-icon">👁</span>
+        <div class="role-card-title">Observer</div>
+        <div class="role-card-sub">View both roles &amp; observe the negotiation as it unfolds</div>
+        <span class="role-card-arrow">→</span>
+      </button>
+    </div>
+
+    <p class="warning-note">
+      <strong>Important:</strong> Only open the role you have been assigned by your instructor.
+      Do not read the other party's role until the debrief at the end of the activity.
+    </p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     DR. JONES VIEW
+══════════════════════════════════════════════ -->
+<div class="role-view" id="view-jones">
+  <div class="role-header jones">
+    <div class="role-header-inner">
+      <div class="role-header-text">
+        <div class="role-tag">Your Role — Confidential</div>
+        <h2>Dr. J.W. Jones</h2>
+        <p>Biological Research Scientist · Pharmaceutical Firm</p>
+      </div>
+      <button class="back-btn" onclick="goBack()">← Back</button>
+    </div>
+  </div>
+
+  <div class="role-content">
+    <div class="confidential-banner jones">
+      🔒 &nbsp;This role is <strong>confidential</strong>. Do not share this screen with Dr. Roland's team.
+    </div>
+
+    <div class="doc-card">
+      <div class="doc-card-header jones">
+        <div class="doc-card-title jones">📄 &nbsp;Role of Dr. J.W. Jones</div>
+      </div>
+      <div class="doc-body">
+        <p>You are Dr. J.W. Jones, a biological research scientist employed by a pharmaceutical firm. You have recently developed a synthetic chemical useful for curing and preventing <strong>Rudosen</strong> — a disease contracted by pregnant women. If not caught in the first four weeks of pregnancy, Rudosen causes serious brain, eye, and ear damage to the unborn child.</p>
+
+        <p>Recently there has been an outbreak of Rudosen in your country, and several thousand women have contracted the disease. You have found, with volunteer patients, that your recently developed synthetic serum cures Rudosen in its early stages. Unfortunately, <strong>the serum is made from the juice of the Ugli orange</strong> — a very rare fruit. Only approximately 4,000 of these oranges were produced last season. No additional Ugli oranges will be available until next season, which will be too late to cure the present Rudosen victims.</p>
+
+        <p>You have demonstrated that your synthetic serum is in no way harmful to pregnant women — there are no side effects. Your government has approved the production and distribution of the serum as a cure for Rudosen. Unfortunately, the present outbreak was unexpected, and your firm had not planned on having the compound serum available for six months. Your firm holds the patent on the synthetic serum and it is expected to be a highly profitable product when generally available.</p>
+
+        <p>You have recently been informed on good evidence that <strong>R.H. Cardoza</strong>, a South American fruit exporter, possesses 3,000 Ugli oranges in good condition. If you could obtain the juice of all 3,000, you would be able to both cure present victims and provide sufficient inoculation for the remaining pregnant women in your country. No other areas in the region currently have a Rudosen threat.</p>
+
+        <p>You have been informed that <strong>Dr. P.W. Roland</strong> is also urgently seeking Ugli oranges and is aware of Cardoza's possession of the 3,000 available. Dr. Roland is employed by a <em>competing</em> pharmaceutical firm. Roland has been working on biological warfare research for the past several years. There is a great deal of industrial espionage in the pharmaceutical industry. Over the past several years, Dr. Roland's firm and yours have sued each other for infringement of patent rights and espionage law violations several times.</p>
+
+        <p>You have been authorised by your firm to approach Cardoza to purchase the 3,000 Ugli oranges. You have been told Cardoza will sell them to the highest bidder. <strong>Your firm has authorised you to bid as high as $50,000</strong> to obtain the juice of the 3,000 available oranges.</p>
+      </div>
+    </div>
+
+    <!-- Key Facts Summary -->
+    <div class="section-divider"><span>Key Facts at a Glance</span></div>
+    <div class="key-facts">
+      <div class="key-fact jones">
+        <div class="key-fact-label jones">Why you need it</div>
+        <div class="key-fact-value">Cure &amp; prevent Rudosen in pregnant women</div>
+      </div>
+      <div class="key-fact jones">
+        <div class="key-fact-label jones">Oranges available</div>
+        <div class="key-fact-value">3,000 held by Cardoza</div>
+      </div>
+      <div class="key-fact jones">
+        <div class="key-fact-label jones">Max. authorised bid</div>
+        <div class="key-fact-value">$50,000</div>
+      </div>
+      <div class="key-fact jones">
+        <div class="key-fact-label jones">Relationship with Roland</div>
+        <div class="key-fact-value">Competing firm; history of litigation</div>
+      </div>
+      <div class="key-fact jones">
+        <div class="key-fact-label jones">Time sensitivity</div>
+        <div class="key-fact-value">No replacement supply until next season</div>
+      </div>
+    </div>
+
+    <!-- Prep checklist -->
+    <div class="section-divider"><span>Pre-Negotiation Preparation (10 min)</span></div>
+    <div class="prep-card">
+      <div class="prep-title">📋 &nbsp;Strategy Checklist</div>
+      <div class="prep-item" onclick="toggleCheck(this)">
+        <input type="checkbox"> <label>Discuss your opening position with your team — how much do you reveal about your purpose?</label>
+      </div>
+      <div class="prep-item" onclick="toggleCheck(this)">
+        <input type="checkbox"> <label>Decide whether to disclose your maximum bid ($50,000) — or keep it concealed.</label>
+      </div>
+      <div class="prep-item" onclick="toggleCheck(this)">
+        <input type="checkbox"> <label>Consider what information about Dr. Roland's purpose might help or hinder you.</label>
+      </div>
+      <div class="prep-item" onclick="toggleCheck(this)">
+        <input type="checkbox"> <label>Plan your BATNA (Best Alternative to a Negotiated Agreement) if talks break down.</label>
+      </div>
+    </div>
+
+    <!-- Timer -->
+    <div class="section-divider"><span>Negotiation Timer</span></div>
+    <div class="timer-card">
+      <div>
+        <div class="timer-label">Time Remaining</div>
+        <div class="timer-display" id="timer-jones">10:00</div>
+        <div class="timer-done-msg" id="timer-jones-done">⏱ Time is up — conclude your negotiation.</div>
+      </div>
+      <div class="timer-info">
+        <div class="timer-sub">10-minute negotiation window.<br>Your instructor will signal when to begin.</div>
+      </div>
+      <div class="timer-btns">
+        <button class="timer-btn start" onclick="startTimer('jones')">Start</button>
+        <button class="timer-btn pause" onclick="pauseTimer('jones')">Pause</button>
+        <button class="timer-btn reset" onclick="resetTimer('jones')">Reset</button>
+      </div>
+    </div>
+  </div>
+</div><!-- end jones view -->
+
+
+<!-- ══════════════════════════════════════════════
+     DR. ROLAND VIEW
+══════════════════════════════════════════════ -->
+<div class="role-view" id="view-roland">
+  <div class="role-header roland">
+    <div class="role-header-inner">
+      <div class="role-header-text">
+        <div class="role-tag">Your Role — Confidential</div>
+        <h2>Dr. P.W. Roland</h2>
+        <p>Research Biologist · Government-Contracted Pharmaceutical Firm</p>
+      </div>
+      <button class="back-btn" onclick="goBack()">← Back</button>
+    </div>
+  </div>
+
+  <div class="role-content">
+    <div class="confidential-banner roland">
+      🔒 &nbsp;This role is <strong>confidential</strong>. Do not share this screen with Dr. Jones's team.
+    </div>
+
+    <div class="doc-card">
+      <div class="doc-card-header roland">
+        <div class="doc-card-title roland">📄 &nbsp;Role of Dr. P.W. Roland</div>
+      </div>
+      <div class="doc-body">
+        <p>You are Dr. P.W. Roland. You work as a research biologist for a pharmaceutical firm under contract with the United States government to conduct research on methods to combat enemy uses of biological warfare.</p>
+
+        <p>Recently, several World War II experimental nerve gas bombs were moved from the U.S. to a small island just off the U.S. coast in the Pacific. In the process of transporting them, <strong>two of the bombs developed a leak</strong>. The leak is presently controlled by government scientists who believe that the gas will permeate the bomb chambers within two weeks. They know of no method of preventing the gas from getting into the atmosphere and spreading to other islands — and very likely to the West Coast as well. If this occurs, it is likely that <strong>several thousand people will incur serious brain damage or die</strong>.</p>
+
+        <p>You have developed a synthetic vapor that will neutralise the nerve gas if it is injected into the bomb chamber before the gas leaks out. <strong>The vapor is made with a chemical taken from the rind of the Ugli orange</strong> — a very rare fruit. Unfortunately, only 4,000 of these oranges were produced this season.</p>
+
+        <p>You have been informed on good evidence that <strong>R.H. Cardoza</strong>, a fruit exporter in South America, possesses 3,000 Ugli oranges in good condition. The chemicals from the rinds of this number of oranges would be sufficient to neutralise the gas if the serum is developed and injected efficiently.</p>
+
+        <p>You have been informed that <strong>Dr. J.W. Jones</strong> is also urgently seeking purchase of Ugli oranges and is aware of Cardoza's possession of the 3,000 available. Dr. Jones works for a firm with which your firm is <em>highly competitive</em>. There is a great deal of industrial espionage in the pharmaceutical industry. Over the years, your firm and Dr. Jones' have sued each other for violations of industrial espionage laws and infringement of patent rights several times. Litigation on two suits is still in process.</p>
+
+        <p>The United States government has asked your firm for assistance. You have been authorised by your firm to approach R.H. Cardoza to purchase the 3,000 Ugli oranges. You have been told Cardoza will sell them to the highest bidder. <strong>Your firm has authorised you to bid as high as $250,000</strong> to obtain the rind of the oranges.</p>
+
+        <p>Before approaching Cardoza, you have decided to talk to Dr. Jones to influence Jones so that Jones will not prevent you from purchasing the oranges.</p>
+      </div>
+    </div>
+
+    <!-- Key Facts Summary -->
+    <div class="section-divider"><span>Key Facts at a Glance</span></div>
+    <div class="key-facts">
+      <div class="key-fact roland">
+        <div class="key-fact-label roland">Why you need it</div>
+        <div class="key-fact-value">Neutralise leaking nerve gas bombs</div>
+      </div>
+      <div class="key-fact roland">
+        <div class="key-fact-label roland">Oranges available</div>
+        <div class="key-fact-value">3,000 held by Cardoza</div>
+      </div>
+      <div class="key-fact roland">
+        <div class="key-fact-label roland">Max. authorised bid</div>
+        <div class="key-fact-value">$250,000</div>
+      </div>
+      <div class="key-fact roland">
+        <div class="key-fact-label roland">Relationship with Jones</div>
+        <div class="key-fact-value">Competing firm; active litigation</div>
+      </div>
+      <div class="key-fact roland">
+        <div class="key-fact-label roland">Time sensitivity</div>
+        <div class="key-fact-value">Gas leak in ~2 weeks; no alternative supply</div>
+      </div>
+    </div>
+
+    <!-- Prep checklist -->
+    <div class="section-divider"><span>Pre-Negotiation Preparation (10 min)</span></div>
+    <div class="prep-card">
+      <div class="prep-title">📋 &nbsp;Strategy Checklist</div>
+      <div class="prep-item" onclick="toggleCheck(this)">
+        <input type="checkbox"> <label>Discuss your opening strategy — do you reveal the nerve gas context, or keep it vague?</label>
+      </div>
+      <div class="prep-item" onclick="toggleCheck(this)">
+        <input type="checkbox"> <label>You have a much higher bid ceiling ($250,000) — how do you use this advantage without overpaying?</label>
+      </div>
+      <div class="prep-item" onclick="toggleCheck(this)">
+        <input type="checkbox"> <label>Consider what Dr. Jones needs the oranges for — does knowing this change your strategy?</label>
+      </div>
+      <div class="prep-item" onclick="toggleCheck(this)">
+        <input type="checkbox"> <label>Plan your BATNA (Best Alternative to a Negotiated Agreement) if talks break down.</label>
+      </div>
+    </div>
+
+    <!-- Timer -->
+    <div class="section-divider"><span>Negotiation Timer</span></div>
+    <div class="timer-card">
+      <div>
+        <div class="timer-label">Time Remaining</div>
+        <div class="timer-display" id="timer-roland">10:00</div>
+        <div class="timer-done-msg" id="timer-roland-done">⏱ Time is up — conclude your negotiation.</div>
+      </div>
+      <div class="timer-info">
+        <div class="timer-sub">10-minute negotiation window.<br>Your instructor will signal when to begin.</div>
+      </div>
+      <div class="timer-btns">
+        <button class="timer-btn start" onclick="startTimer('roland')">Start</button>
+        <button class="timer-btn pause" onclick="pauseTimer('roland')">Pause</button>
+        <button class="timer-btn reset" onclick="resetTimer('roland')">Reset</button>
+      </div>
+    </div>
+  </div>
+</div><!-- end roland view -->
+
+
+<!-- ══════════════════════════════════════════════
+     OBSERVER VIEW
+══════════════════════════════════════════════ -->
+<div class="role-view" id="view-observer">
+
+  <!-- Password lock overlay -->
+  <div id="observer-lock">
+    <div class="lock-box">
+      <div class="lock-icon">🔐</div>
+      <h3>Observer Access</h3>
+      <p>This view contains confidential information from both roles.<br>Enter the password provided by your instructor to continue.</p>
+      <input class="lock-input" type="password" id="observer-password" placeholder="Enter password"
+        onkeydown="if(event.key==='Enter') checkObserverPassword()">
+      <button class="lock-submit" onclick="checkObserverPassword()">Unlock</button>
+      <div class="lock-error-msg" id="observer-error"></div>
+      <br>
+      <button class="lock-back" onclick="goBack()">← Back to role selection</button>
+    </div>
+  </div>
+  <div class="role-header observer">
+    <div class="role-header-inner">
+      <div class="role-header-text">
+        <div class="role-tag">Observer View — Full Access</div>
+        <h2>Observer</h2>
+        <p>Both roles are visible to you. Use this view to follow the negotiation and note your observations.</p>
+      </div>
+      <button class="back-btn" onclick="goBack()">← Back</button>
+    </div>
+  </div>
+
+  <div class="role-content">
+
+    <div class="confidential-banner observer">
+      👁 &nbsp;As an observer, you can see <strong>both roles</strong>. Keep this confidential until the debrief.
+    </div>
+
+    <!-- Both role documents side by side -->
+    <div class="section-divider"><span>Both Roles</span></div>
+    <div class="observer-grid">
+
+      <div class="doc-card">
+        <div class="doc-card-header jones">
+          <div class="doc-card-title jones">🔬 &nbsp;Dr. J.W. Jones</div>
+        </div>
+        <div class="doc-body" style="font-size:0.88rem;">
+          <p>Biological research scientist at a pharmaceutical firm. Needs the <strong>juice</strong> of 3,000 Ugli oranges to produce a serum that cures and prevents <strong>Rudosen</strong> — a disease causing birth defects in unborn children of infected pregnant women.</p>
+          <p>Government has approved the serum. Authorised to bid up to <strong>$50,000</strong>. The outbreak is active and no new orange supply is available until next season.</p>
+          <p>Aware of Roland but views Roland's firm as a <em>hostile competitor</em> with a history of litigation and espionage. Does not know the details of Roland's purpose.</p>
+        </div>
+        <div style="padding: 0 1.6rem 1.2rem;">
+          <div class="key-fact jones" style="font-size:0.82rem;">
+            <div class="key-fact-label jones">Critical detail</div>
+            <div class="key-fact-value">Needs the <em>juice</em> — not the rind</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-card">
+        <div class="doc-card-header roland">
+          <div class="doc-card-title roland">⚗️ &nbsp;Dr. P.W. Roland</div>
+        </div>
+        <div class="doc-body" style="font-size:0.88rem;">
+          <p>Research biologist under U.S. government contract. Needs the <strong>rind</strong> of 3,000 Ugli oranges to produce a vapor that neutralises <strong>leaking nerve gas bombs</strong> — potentially killing thousands on the West Coast.</p>
+          <p>Authorised to bid up to <strong>$250,000</strong>. The gas will permeate its chambers within two weeks — an urgent, life-threatening deadline.</p>
+          <p>Aware of Jones and plans to approach Jones <em>before</em> Cardoza to prevent Jones from outbidding. Views Jones's firm as a hostile competitor.</p>
+        </div>
+        <div style="padding: 0 1.6rem 1.2rem;">
+          <div class="key-fact roland" style="font-size:0.82rem;">
+            <div class="key-fact-label roland">Critical detail</div>
+            <div class="key-fact-value">Needs the <em>rind</em> — not the juice</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- The hidden insight -->
+    <div class="section-divider"><span>Key Insight for Observers</span></div>
+    <div class="prep-card" style="border-left: 4px solid var(--gold); background: #fffbf0;">
+      <div class="prep-title" style="color: var(--navy);">💡 &nbsp;The Win-Win Opportunity</div>
+      <p style="font-size:0.9rem; color:var(--text); line-height:1.7;">
+        Neither party initially realises that they need <strong>different parts of the same orange</strong> — Jones needs the <em>juice</em>, Roland needs the <em>rind</em>. If they share this information, both parties can get everything they need from the same 3,000 oranges, removing the competitive dynamic entirely.
+      </p>
+      <p style="font-size:0.88rem; color:var(--text-muted); margin-top:0.6rem; font-style:italic;">
+        Watch whether either party discovers this through open communication — and if so, at what point in the negotiation it emerges.
+      </p>
+    </div>
+
+    <!-- Observer prompts -->
+    <div class="section-divider"><span>Observation Prompts</span></div>
+    <div class="prep-card">
+      <div class="prep-title">📝 &nbsp;What to Watch For</div>
+      <div class="obs-prompts">
+        <div class="obs-prompt-item"><span class="obs-bullet">→</span><span>Do the parties disclose their actual purpose, or do they guard information?</span></div>
+        <div class="obs-prompt-item"><span class="obs-bullet">→</span><span>Which conflict-handling style does each party appear to adopt — forcing, compromising, problem solving?</span></div>
+        <div class="obs-prompt-item"><span class="obs-bullet">→</span><span>At what point (if any) does the win-win opportunity become apparent?</span></div>
+        <div class="obs-prompt-item"><span class="obs-bullet">→</span><span>How does the power imbalance (Jones: $50K cap vs. Roland: $250K cap) affect the dynamics?</span></div>
+        <div class="obs-prompt-item"><span class="obs-bullet">→</span><span>Does the competitive relationship history between the firms shape the tone of the negotiation?</span></div>
+        <div class="obs-prompt-item"><span class="obs-bullet">→</span><span>What communication behaviours led to a better or worse outcome?</span></div>
+      </div>
+    </div>
+
+    <!-- Observer timer -->
+    <div class="section-divider"><span>Negotiation Timer</span></div>
+    <div class="timer-card">
+      <div>
+        <div class="timer-label">Time Remaining</div>
+        <div class="timer-display" id="timer-observer">10:00</div>
+        <div class="timer-done-msg" id="timer-observer-done">⏱ Time is up — negotiation should conclude.</div>
+      </div>
+      <div class="timer-info">
+        <div class="timer-sub">10-minute negotiation window.<br>Start when both teams begin.</div>
+      </div>
+      <div class="timer-btns">
+        <button class="timer-btn start" onclick="startTimer('observer')">Start</button>
+        <button class="timer-btn pause" onclick="pauseTimer('observer')">Pause</button>
+        <button class="timer-btn reset" onclick="resetTimer('observer')">Reset</button>
+      </div>
+    </div>
+
+  </div>
+</div><!-- end observer view -->
+
+
+<script>
+// ─── NAVIGATION ───
+const OBSERVER_PASSWORD = 'pretty';
+
+function showRole(role) {
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('view-jones').classList.remove('active');
+  document.getElementById('view-roland').classList.remove('active');
+  document.getElementById('view-observer').classList.remove('active');
+  document.getElementById('view-' + role).classList.add('active');
+  // For observer, always show the lock overlay on entry
+  if (role === 'observer') {
+    const lock = document.getElementById('observer-lock');
+    lock.style.display = 'flex';
+    document.getElementById('observer-password').value = '';
+    document.getElementById('observer-error').textContent = '';
+  }
+  window.scrollTo(0, 0);
+}
+
+function checkObserverPassword() {
+  const input = document.getElementById('observer-password');
+  const errorEl = document.getElementById('observer-error');
+  if (input.value.trim().toLowerCase() === OBSERVER_PASSWORD) {
+    document.getElementById('observer-lock').style.display = 'none';
+    errorEl.textContent = '';
+  } else {
+    errorEl.textContent = 'Incorrect password. Please try again.';
+    input.value = '';
+    input.classList.add('error');
+    setTimeout(() => input.classList.remove('error'), 400);
+    input.focus();
+  }
+}
+
+function goBack() {
+  document.getElementById('view-jones').classList.remove('active');
+  document.getElementById('view-roland').classList.remove('active');
+  document.getElementById('view-observer').classList.remove('active');
+  document.getElementById('landing').style.display = 'flex';
+  window.scrollTo(0, 0);
+}
+
+// ─── CHECKLIST ───
+function toggleCheck(item) {
+  const cb = item.querySelector('input[type="checkbox"]');
+  cb.checked = !cb.checked;
+  item.classList.toggle('checked', cb.checked);
+}
+
+// ─── TIMERS ───
+const timers = {
+  jones:    { seconds: 600, interval: null, running: false },
+  roland:   { seconds: 600, interval: null, running: false },
+  observer: { seconds: 600, interval: null, running: false }
+};
+
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
+}
+
+function updateDisplay(role) {
+  const t = timers[role];
+  const el = document.getElementById('timer-' + role);
+  el.textContent = formatTime(t.seconds);
+  el.classList.remove('warning', 'danger', 'running');
+  if (t.running) el.classList.add('running');
+  if (t.seconds <= 60 && t.seconds > 0)  el.classList.add('warning');
+  if (t.seconds === 0) el.classList.add('danger');
+}
+
+function startTimer(role) {
+  const t = timers[role];
+  if (t.running || t.seconds <= 0) return;
+  t.running = true;
+  t.interval = setInterval(() => {
+    t.seconds--;
+    updateDisplay(role);
+    if (t.seconds <= 0) {
+      clearInterval(t.interval);
+      t.running = false;
+      document.getElementById('timer-' + role + '-done').classList.add('visible');
+    }
+  }, 1000);
+  updateDisplay(role);
+}
+
+function pauseTimer(role) {
+  const t = timers[role];
+  if (!t.running) return;
+  clearInterval(t.interval);
+  t.running = false;
+  updateDisplay(role);
+}
+
+function resetTimer(role) {
+  const t = timers[role];
+  clearInterval(t.interval);
+  t.running = false;
+  t.seconds = 600;
+  document.getElementById('timer-' + role + '-done').classList.remove('visible');
+  updateDisplay(role);
+}
+</script>
+</body>
+</html>
